@@ -52,7 +52,7 @@ jobs:
 
       - name: Build
         env:
-          BASE_PATH: '/pn-addon-browser'
+          BASE_PATH: '/${{ github.event.repository.name }}'
         run: |
           npm run build
           touch build/.nojekyll
