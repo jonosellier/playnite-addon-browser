@@ -3,6 +3,7 @@
 	import Fuse, { type FuseResult } from 'fuse.js';
 	import { getAddons } from '$lib/addon.data';
 	import { onMount } from 'svelte';
+	import { base } from '$app/paths';
 
 	let addons = $state([] as Addon[]);
 	let addonSearch = new Fuse(addons, {
@@ -92,7 +93,7 @@
 	{#each filteredAddons as addon}
 		<a
 			class="p-4 border-b border-slate-900 block hover:bg-slate-900 transition-colors duration-200"
-			href={`/${addon.item.addonId}`}
+			href={`${base}/${addon.item.addonId}`}
 		>
 			<div class="flex justify-between items-center mb-3">
 				<div class="flex items-center">

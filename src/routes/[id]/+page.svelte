@@ -6,6 +6,7 @@
 	import type { FuseResult } from 'fuse.js';
 	import Fuse from 'fuse.js';
 	import { onMount } from 'svelte';
+	import { base } from '$app/paths';
 
 	let relatedAddons: Addon[] = $state([]);
 	let addon: Addon | undefined = $state();
@@ -93,7 +94,9 @@
 
 <div class="flex justify-between">
 	<aside class="max-w-lg w-100 grow-0 hidden md:block h-dvh overflow-y-auto px-2 sticky top-0">
-		<a href="/" class="inline-block bg-slate-900 px-2 py-1 rounded hover:bg-slate-800 m-2 my-4"
+		<a
+			href={base + '/'}
+			class="inline-block bg-slate-900 px-2 py-1 rounded hover:bg-slate-800 m-2 my-4"
 			>🡐 All Addons</a
 		>
 		<div class="sticky top-0">
@@ -108,7 +111,7 @@
 			<a
 				class="px-4 border-b border-slate-900 block hover:bg-slate-900 transition-colors duration-200"
 				href={filterAddon.item.addonId !== addon?.addonId
-					? `/${filterAddon.item.addonId}`
+					? `${base}/${filterAddon.item.addonId}`
 					: undefined}
 				class:text-orange-500={filterAddon.item.addonId === addon?.addonId}
 				class:bg-slate-800={filterAddon.item.addonId === addon?.addonId}
