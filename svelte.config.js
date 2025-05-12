@@ -7,7 +7,7 @@ const config = {
 		adapter: adapter({
 			pages: 'build',
 			assets: 'build',
-			fallback: '200.html', // for SPA routing
+			fallback: '404.html', // for SPA routing
 			precompress: false,
 			strict: true
 		}),
