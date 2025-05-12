@@ -23,7 +23,7 @@ jobs:
 
       - name: build
         env:
-          BASE_PATH: '/<your-repo-name>'
+          BASE_PATH: '/pn-addons'
         run: |
           npm run build
           touch build/.nojekyll
