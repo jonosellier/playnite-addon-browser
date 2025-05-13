@@ -21,6 +21,16 @@
 
 	let searchTerm = $state('');
 
+	let ghProfile = $derived(
+		!!addon
+			? (Object.entries(addon.links ?? {}).find(
+					([k, v]) =>
+						k.toLocaleLowerCase().includes('github') ||
+						v.toLocaleLowerCase().match(/(github\.com\/[A-Za-z0-9-]+)\/.+/)
+				) ?? [[]])[1]?.replace(/(github\.com\/[A-Za-z0-9-]+)\/.+/, '$1')
+			: undefined
+	);
+
 	let filteredAddons: FuseResult<Addon>[] = $derived(
 		!!searchTerm && addonSearch
 			? addonSearch.search(searchTerm)
@@ -134,18 +144,35 @@
 	</aside>
 	<main class="flex-grow pt-4">
 		{#if addon}
-			<div class="flex justify-between max-w-4xl mx-auto">
-				<h1 class="text-5xl font-bold mb-4">{addon.name}</h1>
-				<img
-					src={addon.iconUrl ??
-						'https://raw.githubusercontent.com/Jeshibu/PlayniteExtensions/main/source/ExtraEmulatorProfiles/icon.png'}
-					alt={addon.name}
-					class="mb-4"
-					width="52"
-					height="52"
-				/>
+			<div class="flex justify-between max-w-4xl mx-auto items-center">
+				<div class="flex items-center">
+					<img
+						src={addon.iconUrl ??
+							'https://raw.githubusercontent.com/Jeshibu/PlayniteExtensions/main/source/ExtraEmulatorProfiles/icon.png'}
+						alt={addon.name}
+						class="mb-4 me-6"
+						width="52"
+						height="52"
+					/>
+					<h1 class="text-5xl font-bold mb-4">{addon.name}</h1>
+				</div>
+				<a
+					href={ghProfile}
+					class="bg-black/10 border border-slate-900 rounded-full py-1 text-lg flex items-center"
+				>
+					{#if ghProfile}
+						<img
+							src={`${ghProfile}.png`}
+							alt={addon.author}
+							class="rounded-full ms-1 border border-slate-700"
+							width="32"
+							height="32"
+						/>
+					{/if}
+					<span class="mx-3">{addon.author}</span>
+				</a>
 			</div>
-			<p class="max-w-4xl mx-auto mb-6">
+			<p class="max-w-4xl mx-auto my-6">
 				<span
 					class="inline-block bg-slate-600 text-slate-50 text-sm px-2 py-1 rounded-full mr-2 uppercase font-bold tracking-widest"
 				>
@@ -178,7 +205,11 @@
 			{#if addon.screenshots && addon.screenshots.length > 0}
 				<Carousel imgs={addon.screenshots} index={0} />
 			{/if}
-			<p class="my-20 max-w-4xl mx-auto text-lg text-justify">{addon.description}</p>
+			<section class="my-20 max-w-4xl mx-auto">
+				{#each (addon.description ?? '').split('\n').filter(Boolean) as d}
+					<p class="my-1 text-lg text-justify">{d}</p>
+				{/each}
+			</section>
 			<h2 class="text-4xl max-w-4xl mx-auto mb-6 text-orange-500">Additional Links</h2>
 			<p class="mb-4 max-w-4xl mx-auto">
 				{#each Object.entries(addon.links ?? {}) as [title, link]}
